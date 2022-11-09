@@ -467,8 +467,9 @@ if __name__ == '__main__':
         results = pool.map(parser.distribute_parse, zip(table_names, sents))
         pool.close()
         pool.join()
-        
-        with open("program_{}".format(args.score_file), 'w') as f:
+       
+        score_file = args.score_file.split('/')[-1]
+        with open("program_{}".format(score_file), 'w+') as f:
             json.dump(results, f, indent=2)
 
     if args.compute_score:

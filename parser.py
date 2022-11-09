@@ -1435,7 +1435,17 @@ def merge_strings(string, tags=None):
         words.append(buff)
 
     tags = tags.split(' ')
-    assert len(words) == len(tags), "{} and {}".format(words, tags)
+    if len(words) == 0:
+        words = ['']
+    print('len words', len(words))
+    print('len tags', len(tags))
+    if len(words) == len(tags):
+        assert len(words) == len(tags), "{} and {}".format(words, tags)
+    else:
+        if len(words) < len(tags):
+            tags = tags[:len(words)]
+        else:
+            words = words[:len(tags)]
 
     i = 0
     while i < len(words):
@@ -1856,7 +1866,7 @@ class Parser(object):
             
             result = self.run(table_name, raw_sent, masked_sent, pos, mem_str, mem_num, head_str, head_num)
 
-            with open('tmp/results/{}.json'.format(hash_id), 'w') as f:
+            with open('tmp/results/{}.json'.format(hash_id), 'w+') as f:
                 json.dump((inputs[1], result, self.title_mapping[table_name]), f, indent=2)
 
             return inputs[1], result, self.title_mapping[table_name]
