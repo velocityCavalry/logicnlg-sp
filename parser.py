@@ -1437,8 +1437,8 @@ def merge_strings(string, tags=None):
     tags = tags.split(' ')
     if len(words) == 0:
         words = ['']
-    print('len words', len(words))
-    print('len tags', len(tags))
+    # print('len words', len(words))
+    # print('len tags', len(tags))
     if len(words) == len(tags):
         assert len(words) == len(tags), "{} and {}".format(words, tags)
     else:
@@ -1455,20 +1455,24 @@ def merge_strings(string, tags=None):
             if is_number(words[i].split(';')[0][1:]) and is_number(words[i - 2].split(';')[0][1:]):
                 i += 1
             else:
-                prev_idx = words[i - 2].split(';')[1][:-1].split(',')
-                cur_idx = words[i].split(';')[1][:-1].split(',')
-                if cur_idx == prev_idx or (prev_idx[0] == '-2' and prev_idx[1] == cur_idx[1]):
-                    position = "{},{}".format(cur_idx[0], cur_idx[1])
-                    candidate = words[i - 2].split(';')[0] + " " + words[i].split(';')[0][1:] + ";" + position + "#"
-                    words[i] = candidate
-                    del words[i - 1]
-                    del tags[i - 1]
-                    i -= 1
-                    del words[i - 1]
-                    del tags[i - 1]
-                    i -= 1
+                if len(words[i - 2].split(';')) > 1 and len(words[i].split(';')[1]) > 1:
+                    prev_idx = words[i - 2].split(';')[1][:-1].split(',')
+                    cur_idx = words[i].split(';')[1][:-1].split(',')
+                    if cur_idx == prev_idx or (prev_idx[0] == '-2' and prev_idx[1] == cur_idx[1]):
+                        position = "{},{}".format(cur_idx[0], cur_idx[1])
+                        candidate = words[i - 2].split(';')[0] + " " + words[i].split(';')[0][1:] + ";" + position + "#"
+                        words[i] = candidate
+                        del words[i - 1]
+                        del tags[i - 1]
+                        i -= 1
+                        del words[i - 1]
+                        del tags[i - 1]
+                        i -= 1
+                    else:
+                        i += 1
                 else:
-                    i += 1
+                    print('here')
+                    # print(words)
         else:
             i += 1
 
